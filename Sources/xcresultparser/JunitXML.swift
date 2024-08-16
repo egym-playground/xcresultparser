@@ -283,7 +283,12 @@ private extension ActionTestMetadata {
         nodeNames: NodeNames
     ) -> XMLElement {
         let testcase = XMLElement(name: nodeNames.testcaseName)
-        testcase.addAttribute(name: "name", stringValue: name ?? "No-name")
+        let testName = name ?? "No-name"
+        
+        //removing () from test name because TestRail can't recognize the testCaseID with it
+        let formattedName = testName.replacingOccurrences(of: "()", with: "")
+        
+        testcase.addAttribute(name: "name", stringValue: formattedName)
         if let time = duration,
            !nodeNames.testcaseDurationName.isEmpty {
             let correctedTime: String
